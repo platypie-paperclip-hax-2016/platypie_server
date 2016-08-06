@@ -4,6 +4,7 @@ var https = require("https")
 var mongoose = require("mongoose")
 var app = express()
 var server = https.createServer({
+    ca: fs.readFileSync("/home/ubuntu/ca.pem"),
     key: fs.readFileSync("/home/ubuntu/privkey.pem"),
     cert: fs.readFileSync("/home/ubuntu/cert.pem")
 }, app)
