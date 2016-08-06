@@ -39,7 +39,9 @@ router.route("/fb/messages")
         var data = req.body;
 
         if (data.object === 'page') {
+            console.log("\nNew Entry")
             data.entry.forEach(function (entry) {
+                console.log(entry)
                 entry.messaging.forEach(function (event) {
                     if (event.message) {
                         const sender = event.sender.id;
