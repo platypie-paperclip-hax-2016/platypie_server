@@ -1,6 +1,25 @@
 var router = require("express").Router()
 var fbMessage = require("../utils").fbMessage
 
+const sessions = {};
+
+const findOrCreateSession = function(fbid) {
+    var sessionId;
+    // Let's see if we already have a session for the user fbid
+    Object.keys(sessions).forEach(function(k) {
+        if (sessions[k].fbid === fbid) {
+            // Yep, got it!
+            sessionId = k;
+        }
+    });
+    if (!sessionId) {
+        // No session found for user fbid, let's create a new one
+        sessionId = new Date().toISOString();
+        sessions[sessionId] = {fbid: fbid, context: {}};
+    }
+    return sessionId;
+};
+
 router.route("/fb/messages")
     .get(function (req, res) {
         if (req.query['hub.mode'] === 'subscribe' &&
