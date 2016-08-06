@@ -45,7 +45,7 @@ router.route("/fb/messages")
             var filteredEntries = data.entry.filter(function(entry) {
                 return entryIds.indexOf(entry.id) == -1
             })
-            filteredEntries.entry.forEach(function (entry) {
+            filteredEntries.forEach(function (entry) {
                 console.log(entry)
                 entryIds.append(entry.id)
 
