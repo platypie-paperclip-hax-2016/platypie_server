@@ -47,7 +47,7 @@ However, the rest of their custom pages are different. Student Ambassadors see o
 Conversely, prospective students see on their custom pages:
 * My Shortlist of up to five universities, with an application progress bar and, for premium users, a _Contact_ button that allows prospective students to reach Student Ambassadors via Facebook Messenger
 * Recommended Testimonials feed of the above shortlisted universities
-* An applications planner tool, with _Upcoming Dates_ and other calendar features
+* An applications planner tool, with _Upcoming Dates_ and other calendar features, such as Open Days
 
 ### Community moderation and keeping the posts high quality
 As mentioned, Student Ambassadors will take on the bulk of the moderation responsibility. To incentivize high content quality, we plan to reimburse the moderators with the membership money that 
