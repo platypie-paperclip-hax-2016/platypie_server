@@ -21,4 +21,4 @@ utils.fbMessage = function(id, text) {
 }
 
 
-module.export = utils
+module.exports = utils
