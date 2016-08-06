@@ -58,7 +58,7 @@ utils.createStore = function() {
         getSession: function(id) {
             return sessions[id]
         }
-        
+
     }
 }
 

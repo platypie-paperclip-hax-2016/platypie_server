@@ -70,7 +70,7 @@ router.route("/fb/messages")
                                 //   delete sessions[sessionId];
                                 // }
 
-                                sessions[sessionId].context = context;
+                                store.getSession(sessionId).context = context;
                             })
                             .catch(function(err) {
                                 console.error('Oops! Got an error from Wit: ', err.stack || err);
