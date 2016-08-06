@@ -1,3 +1,5 @@
 DATABASE_URL=mongodb://username:password@host:port/database?options...
 PORT_NUMBER=3000
-VALIDATION_TOKEN=your_validation_token
+FB_VERIFY_TOKEN=your_validation_token
+FB_ACCESS_TOKEN=fb_access_token
+AI_ACCESS_TOKEN=ai_access_token
