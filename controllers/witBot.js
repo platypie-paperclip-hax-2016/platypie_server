@@ -4,15 +4,17 @@ function witWrapper(store) {
 
     var actions = {
         send: function(request, response) {
+            console.log(response)
             return new Promise(function(resolve, reject) {
                 var fbId = store.getSession(request.sessionId)
                 fbMessage(fbId, response.text)
                 resolve()
             })
         },
-        getMajor: function(context, entities) {
+        getMajor: function(request) {
+            console.log("#getMajor() called")
             return new Promise(function(resolve, reject) {
-
+                resolve()
             })
         }
     }

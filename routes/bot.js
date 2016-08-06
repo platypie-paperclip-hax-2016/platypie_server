@@ -1,4 +1,5 @@
 var router = require("express").Router()
+var util = require('util')
 var fbMessage = require("../utils").fbMessage
 
 var store = require("../utils").createStore()
@@ -28,7 +29,6 @@ router.route("/fb/messages")
                 return !store.entryExists(entry.id)
             })
             filteredEntries.forEach(function (entry) {
-                console.log(entry)
                 store.addEntry(entry.id)
 
                 var filteredMessages = entry.messaging.filter(function(event) {
@@ -51,26 +51,27 @@ router.route("/fb/messages")
                             // We received a text message
                             console.log("Message received:" + text)
                             fbMessage(sender, "Message received")
-                            wit.converse(sessionId, text, store.getSession(sessionId).context)
-                                .then(function(data) {
-                                    console.log("Received response from wit: " + data)
-                                })
-                            // wit.runActions(
-                            //     sessionId, // the user's current session
-                            //     text, // the user's message
-                            //     sessions[sessionId].context // the user's current session state
-                            // ).then(function (context) {
-                            //     console.log('Waiting for next user messages');
-                            //
-                            //     // Based on the session state, you might want to reset the session.
-                            //     // This depends heavily on the business logic of your bot.
-                            //     // Example:
-                            //     // if (context['done']) {
-                            //     //   delete sessions[sessionId];
-                            //     // }
-                            //
-                            //     sessions[sessionId].context = context;
-                            // })
+                            // wit.converse(sessionId, text, store.getSession(sessionId).context)
+                            //     .then(function(data) {
+                            //         console.log("Received response from wit")
+                            //         console.log(util.inspect(data, {depth: null, breakLength: 100}))
+                            //     })
+                            wit.runActions(
+                                sessionId, // the user's current session
+                                text, // the user's message
+                                store.getSession(sessionId).context // the user's current session state
+                            ).then(function (context) {
+                                console.log('Received context from wit:' + context);
+
+                                // Based on the session state, you might want to reset the session.
+                                // This depends heavily on the business logic of your bot.
+                                // Example:
+                                // if (context['done']) {
+                                //   delete sessions[sessionId];
+                                // }
+
+                                sessions[sessionId].context = context;
+                            })
                             .catch(function(err) {
                                 console.error('Oops! Got an error from Wit: ', err.stack || err);
                             })
