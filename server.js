@@ -34,6 +34,8 @@ mongoose.connection.on("error", console.error.bind(console, 'connection error:')
 
 /** Routes setup **/
 var apiBaseRoute = require("./routes/api")
+var botRoute = require('./routes/bot')
+app.use("/bot", botRoute)
 app.use("/api", apiBaseRoute)
 
 
