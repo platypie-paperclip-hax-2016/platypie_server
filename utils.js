@@ -21,5 +21,46 @@ utils.fbMessage = function(id, text) {
         })
 }
 
+utils.createStore = function() {
+    var sessions = {}
+    var entryIds = []
+    var messageIds = []
+
+    return {
+        findOrCreateSession: function(fbid) {
+            var sessionId;
+            // Let's see if we already have a session for the user fbid
+            Object.keys(sessions).forEach(function(k) {
+                if (sessions[k].fbid === fbid) {
+                    // Yep, got it!
+                    sessionId = k;
+                }
+            });
+            if (!sessionId) {
+                // No session found for user fbid, let's create a new one
+                sessionId = new Date().toISOString();
+                sessions[sessionId] = {fbid: fbid, context: {}};
+            }
+            return sessionId;
+        },
+        addEntry: function(id) {
+            entryIds.push(id)
+        },
+        entryExists: function(id) {
+            return entryIds.indexOf(id) == 1
+        },
+        addMessage: function(id) {
+            messageIds.push(id)
+        },
+        messageExists: function(id) {
+            return messageIds.indexOf(id) == 1
+        },
+        getSession: function(id) {
+            return sessions[id]
+        }
+        
+    }
+}
+
 
 module.exports = utils
