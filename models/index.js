@@ -32,7 +32,7 @@ const IndustrySchema = new Schema({
   name: String,
   wikiUrl: String,
   summary: String,
-  majors: [{ type: Schema.Types.Object, ref: 'Major' }]
+  majors: [{ type: Schema.Types.Object, ref: 'Major' }],
   jobs: [String]
 })
 

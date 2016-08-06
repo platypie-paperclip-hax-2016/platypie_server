@@ -9,6 +9,7 @@ var server = https.createServer({
     cert: fs.readFileSync("/home/ubuntu/cert.pem")
 }, app)
 var bodyParser = require("body-parser")
+var models = require("./models")
 
 require("dotenv").config() //loads environment variables from .env file
 
