@@ -1,6 +1,8 @@
 var router = require("express").Router()
 var fbMessage = require("../utils").fbMessage
 
+var entryIds = []
+var messageIds = []
 const sessions = {};
 
 const findOrCreateSession = function(fbid) {
@@ -40,10 +42,19 @@ router.route("/fb/messages")
 
         if (data.object === 'page') {
             console.log("\nNew Entry")
-            data.entry.forEach(function (entry) {
+            var filteredEntries = data.entry.filter(function(entry) {
+                return entryIds.indexOf(entry.id) == -1
+            })
+            filteredEntries.entry.forEach(function (entry) {
                 console.log(entry)
-                entry.messaging.forEach(function (event) {
+                entryIds.append(entry.id)
+
+                var filteredMessages = entry.messaging.filter(function(event) {
+                    return messageIds.indexOf(event.message.mid) == -1
+                })
+                filteredMessages.forEach(function (event) {
                     if (event.message) {
+                        messageIds.append(event.message.mid)
                         const sender = event.sender.id;
                         const sessionId = findOrCreateSession(sender);
 

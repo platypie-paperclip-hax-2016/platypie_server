@@ -7,18 +7,18 @@ utils.fbMessage = function(id, text) {
         message: { text: text },
     });
     const qs = 'access_token=' + encodeURIComponent(process.env.FB_ACCESS_TOKEN);
-    return ('https://graph.facebook.com/me/messages?' + qs, {
+    return fetch('https://graph.facebook.com/me/messages?' + qs, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: body,
+            body: body
         })
         .then(function(rsp) { rsp.json() })
         .then(function(json) {
             if (json.error && json.error.message) {
-            throw new Error(json.error.message);
-        }
-        return json;
-    });
+                throw new Error(json.error.message);
+            }
+            return json;
+        })
 }
 
 
