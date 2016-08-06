@@ -1,26 +1,8 @@
 var router = require("express").Router()
 var fbMessage = require("../utils").fbMessage
 
-var entryIds = []
-var messageIds = []
-const sessions = {};
-
-const findOrCreateSession = function(fbid) {
-    var sessionId;
-    // Let's see if we already have a session for the user fbid
-    Object.keys(sessions).forEach(function(k) {
-        if (sessions[k].fbid === fbid) {
-            // Yep, got it!
-            sessionId = k;
-        }
-    });
-    if (!sessionId) {
-        // No session found for user fbid, let's create a new one
-        sessionId = new Date().toISOString();
-        sessions[sessionId] = {fbid: fbid, context: {}};
-    }
-    return sessionId;
-};
+var store = require("../utils").createStore()
+var wit = require("../controllers/witBot")(store)
 
 router.route("/fb/messages")
     .get(function (req, res) {
@@ -43,20 +25,20 @@ router.route("/fb/messages")
         if (data.object === 'page') {
             console.log("\nNew Entry")
             var filteredEntries = data.entry.filter(function(entry) {
-                return entryIds.indexOf(entry.id) == -1
+                return !store.entryExists(entry.id)
             })
             filteredEntries.forEach(function (entry) {
                 console.log(entry)
-                entryIds.append(entry.id)
+                store.addEntry(entry.id)
 
                 var filteredMessages = entry.messaging.filter(function(event) {
-                    return messageIds.indexOf(event.message.mid) == -1
+                    return !store.messageExists(event.message.mid)
                 })
                 filteredMessages.forEach(function (event) {
                     if (event.message) {
-                        messageIds.append(event.message.mid)
+                        store.addMessage(event.message.mid)
                         const sender = event.sender.id;
-                        const sessionId = findOrCreateSession(sender);
+                        const sessionId = store.findOrCreateSession(sender);
 
                         var text = event.message.text
                         var attachments = event.message.attachments
@@ -69,7 +51,7 @@ router.route("/fb/messages")
                             // We received a text message
                             console.log("Message received:" + text)
                             fbMessage(sender, "Message received")
-                            wit.converse(sessionId, text, sessions[sessionId].context)
+                            wit.converse(sessionId, text, store.getSession(sessionId).context)
                                 .then(function(data) {
                                     console.log("Received response from wit: " + data)
                                 })
