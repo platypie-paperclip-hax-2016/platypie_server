@@ -1,8 +1,12 @@
+var fs = require("fs")
 var express = require("express")
-var http = require("http")
+var https = require("https")
 var mongoose = require("mongoose")
 var app = express()
-var server = http.createServer(app)
+var server = https.createServer({
+    key: fs.readFileSync("/home/ubuntu/privkey.pem"),
+    cert: fs.readFileSync("/home/ubuntu/cert.pem")
+}, app)
 var bodyParser = require("body-parser")
 
 require("dotenv").config() //loads environment variables from .env file
@@ -26,10 +30,10 @@ app.use(function(err, req, res, next) {
 
 
 /** Mongodb setup **/
-mongoose.connect(process.env.DATABASE_URL, function(err) {
-    if (err) throw err
-})
-mongoose.connection.on("error", console.error.bind(console, 'connection error:'))
+// mongoose.connect(process.env.DATABASE_URL, function(err) {
+//     if (err) throw err
+// })
+// mongoose.connection.on("error", console.error.bind(console, 'connection error:'))
 
 
 /** Routes setup **/
