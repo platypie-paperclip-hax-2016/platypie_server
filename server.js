@@ -31,10 +31,10 @@ app.use(function(err, req, res, next) {
 
 
 /** Mongodb setup **/
-// mongoose.connect(process.env.DATABASE_URL, function(err) {
-//     if (err) throw err
-// })
-// mongoose.connection.on("error", console.error.bind(console, 'connection error:'))
+mongoose.connect(process.env.DATABASE_URL, function(err) {
+    if (err) throw err
+})
+mongoose.connection.on("error", console.error.bind(console, 'connection error:'))
 
 
 /** Routes setup **/
