@@ -18,6 +18,7 @@ const UserSchema = new Schema({
 const UniversitySchema = new Schema({
   name: String,
   majors: [{ type: Schema.Types.ObjectId, ref: 'Major' }],
+  applicationDeadline: Date,
   city: { type: Schema.Types.ObjectId, ref: 'City' },
   rank: Number
 })
