@@ -31,7 +31,39 @@ function witWrapper(store) {
                             resolve(context)
                         }
                     })
+                } else {
+                    console.log("#getMajor() desired entities not found")
+                    reject("Error")
                 }
+            })
+        },
+        getApplicationDeadline: function(request) {
+            console.log("#getApplicationDeadline called")
+            return new Promise(function(resolve, reject) {
+                var entities = request.entities
+                var context = request.context
+                if (entities.university) {
+                    var universityName = entities.university.value
+                    models.University.findOne({name: universityName}, function(err, uni) {
+                        if (err) reject(err.message)
+                        else if (!uni) reject("University not found")
+                        else {
+                            context.application_deadline = uni.applicationDeadline
+                            resolve(context)
+                        }
+                    })
+                } else {
+                    console.log("#getMajor() desired entities not found")
+                    reject("Error")
+                }
+            })
+        },
+        getUniversity: function(request) {
+            console.log("#getUniversity() called")
+            return new Promise(function(resolve, reject) {
+                let {entities, context} = request
+                console.log(entities)
+                // if (entities.)
             })
         }
     }
