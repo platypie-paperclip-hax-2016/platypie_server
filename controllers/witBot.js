@@ -16,6 +16,7 @@ function witWrapper(store) {
             console.log("#getMajor() called")
             return new Promise(function(resolve, reject) {
                 var context = request.context
+                console.log(request.entities)
                 if (request.entities.intent) {
 
                 } else if (request.entities.major) {
@@ -63,7 +64,38 @@ function witWrapper(store) {
             return new Promise(function(resolve, reject) {
                 let {entities, context} = request
                 console.log(entities)
-                // if (entities.)
+                if (entities.location || entities.major) {
+                    new Promise(function(res, rej) {
+                        models.User.findOne({
+                            fbId: store.getSession(request.sessionId).fbid
+                        }, function(err, city) {
+                            if (err) rej(err)
+                            if (!city) rej(new Error("City not found"))
+                            else {
+                                resolve(city._id)
+                            }
+                        })
+                    }).then(function(city) {
+                        models.University.populate("majors").findOne({
+                            majors: {
+                                name: entities.major[0].value
+                            },
+                            city: city
+                        }, function(err, uni) {
+                            if (err) reject(err.message)
+                            else if (!uni) reject("University not found")
+                            else {
+                                context.university = uni.name
+                                context.universityUrl = process.env.BASE_URL + "/university/" + uni._id
+                            }
+                        })
+                    }, function(err) {
+                        reject(err.message)
+                    })
+                } else {
+                    console.log("#getUniversity() desired entities not found")
+                    reject("Error")
+                }
             })
         }
     }
