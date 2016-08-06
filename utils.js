@@ -5,7 +5,7 @@ utils.fbMessage = function(id, text) {
         recipient: { id: id },
         message: { text: text },
     });
-    const qs = 'access_token=' + encodeURIComponent(FB_PAGE_TOKEN);
+    const qs = 'access_token=' + encodeURIComponent(process.env.FB_ACCESS_TOKEN);
     return fetch('https://graph.facebook.com/me/messages?' + qs, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
