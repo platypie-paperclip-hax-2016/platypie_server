@@ -1,4 +1,5 @@
 var utils = {}
+var fetch = require("node-fetch")
 
 utils.fbMessage = function(id, text) {
     const body = JSON.stringify({
@@ -6,7 +7,7 @@ utils.fbMessage = function(id, text) {
         message: { text: text },
     });
     const qs = 'access_token=' + encodeURIComponent(process.env.FB_ACCESS_TOKEN);
-    return fetch('https://graph.facebook.com/me/messages?' + qs, {
+    return ('https://graph.facebook.com/me/messages?' + qs, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: body,
